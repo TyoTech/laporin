@@ -28,7 +28,8 @@ Route::middleware(['auth', 'role:warga'])->group(function () {
     Route::post('/buat-laporan', [WargaController::class, 'store'])->name('warga.store');
     Route::get('/tentang', [WargaController::class, 'tentang'])->name('warga.tentang');
     Route::get('/laporan/{id}', [WargaController::class, 'show'])->name('warga.show');
-    
+    Route::get('/laporan/{id}/edit', [WargaController::class, 'edit'])->name('warga.edit');
+    Route::put('/laporan/{id}', [WargaController::class, 'update'])->name('warga.update');
 });
 
 // Petugas

@@ -70,4 +70,18 @@ class WargaController extends Controller
         $laporan = Laporan::with('user')->findOrFail($id);
         return view('warga.detail-laporan', compact('laporan'));
     }
+    public function edit($id)
+    {
+        $laporan = Laporan::findOrFail($id);
+        return view('warga.edit', compact('laporan'));
+    }
+    public function update(Request $request, $id)
+    {
+        $laporan = Laporan::findOrFail($id);
+        $laporan->judul = $request->judul;
+        $laporan->kategori = $request->kategori;
+        $laporan->deskripsi = $request->deskripsi;
+        $laporan->save();
+        return redirect()->route('warga.dashboard')->with('success','Laporan berhasil diupdate');
+    }
 }

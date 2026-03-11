@@ -54,6 +54,7 @@
                 <th class="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Pelapor</th>
                 <th class="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Status</th>
                 <th class="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Tanggal</th>
+                <th class="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Action</th>
             </tr>
         </thead>
         <tbody class="divide-y divide-gray-50">
@@ -88,6 +89,12 @@
                 </td>
                 <td class="px-6 py-4 text-sm text-gray-400">
                     {{ $item->created_at->format('d M Y') }}
+                </td>
+                <td class="px-6 py-4">
+                    <a href="{{ route('warga.edit', $item->id) }}"
+                        class="text-blue-500">
+                        Edit
+                    </a>
                 </td>
             </tr>
             @empty
