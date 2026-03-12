@@ -74,15 +74,38 @@ class WargaController extends Controller
     public function edit($id)
     {
         $laporan = Laporan::findOrFail($id);
+        if ($laporan->user_id !== auth()->id()) {
+            abort(403, 'Kamu tidak punya akses untuk mengedit laporan ini.');
+        }
         return view('warga.edit', compact('laporan'));
     }
     public function update(Request $request, $id)
     {
         $laporan = Laporan::findOrFail($id);
-        $laporan->judul = $request->judul;
-        $laporan->kategori = $request->kategori;
-        $laporan->deskripsi = $request->deskripsi;
-        $laporan->save();
+
+        if ($laporan->user_id != auth()->id()) {
+            abort(403);
+        }
+
+        $data = $request->validate([
+            'judul' => 'required',
+            'deskripsi' => 'required',
+            'foto.*' => 'image|mimes:jpg,jpeg,png|max:2048'
+        ]);
+
+        if ($request->hasFile('foto')) {
+            $fotoPaths = [];
+
+            foreach ($request->file('foto') as $foto) {
+                $path = $foto->store('laporan', 'public');
+                $fotoPaths[] = $path;
+            }
+
+            $data['foto'] = $fotoPaths;
+        }
+
+        $laporan->update($data);
+
         return redirect()->route('warga.dashboard')->with('success','Laporan berhasil diupdate');
     }
 }

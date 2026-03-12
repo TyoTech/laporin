@@ -92,10 +92,12 @@
                         {{ $item->created_at->format('d M Y') }}
                     </td>
                     <td class="px-4 md:px-6 py-3 md:py-4">
+                        @if($item->user_id == auth()->id())
                         <a href="{{ route('warga.edit', $item->id) }}"
                             class="text-blue-500">
                             Edit
                         </a>
+                        @endif
                     </td>
                 </tr>
                 @empty

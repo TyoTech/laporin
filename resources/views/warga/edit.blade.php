@@ -85,7 +85,7 @@
             @if($laporan->foto)
             <div class="flex gap-3 mt-3 flex-wrap">
                 @foreach($laporan->foto as $foto)
-                    <img src="{{ asset('storage/'.$foto) }}">
+                    <img src="{{ asset('storage/'.$foto) }}" width="120">
                 @endforeach
             </div>
             @endif
