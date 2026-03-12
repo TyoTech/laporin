@@ -79,7 +79,7 @@
     <div class="bg-white rounded-2xl border border-gray-100 p-8">
         <h2 class="text-sm font-bold text-gray-900 mb-4">Foto Bukti</h2>
         <div class="grid grid-cols-3 gap-4">
-            @foreach($laporan->foto as $foto)
+            @foreach(json_decode($laporan->foto, true) ?? [] as $foto)
             <a href="{{ Storage::url($foto) }}" target="_blank">
                 <img src="{{ Storage::url($foto) }}"
                     class="w-full h-40 object-cover rounded-xl border border-gray-100 hover:opacity-80 transition-opacity cursor-zoom-in">
