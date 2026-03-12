@@ -44,7 +44,8 @@ class WargaController extends Controller
         $fotos = [];
         if ($request->hasFile('foto')) {
             foreach ($request->file('foto') as $file) {
-                $fotos[] = $file->store('laporan', 'public');
+                $path = $file->store('laporan', 'public');
+                $fotos[] = $path;
             }
         }
 
@@ -53,7 +54,7 @@ class WargaController extends Controller
             'judul' => $request->judul,
             'kategori' => $request->kategori,
             'deskripsi' => $request->deskripsi,
-            'foto' => $fotos,
+            'foto' => json_encode($fotos),
             'status' => 'Belum Dibaca',
         ]);
 

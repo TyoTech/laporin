@@ -75,7 +75,7 @@
     </div>
 
     {{-- Card Foto --}}
-    @if($laporan->foto && count($laporan->foto) > 0)
+    @if(!empty($laporan->foto) > 0)
     <div class="bg-white rounded-2xl border border-gray-100 p-8">
         <h2 class="text-sm font-bold text-gray-900 mb-4">Foto Bukti</h2>
         <div class="grid grid-cols-3 gap-4">
