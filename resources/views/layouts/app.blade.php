@@ -7,10 +7,15 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gray-50 min-h-screen flex">
-
+    {{-- Mobile Header --}}
+    <div class="md:hidden fixed top-0 left-0 right-0 bg-white border-b border-gray-100 flex items-center gap-3 px-4 py-3 z-40">
+        <button onclick="toggleSidebar()" class="text-2xl">
+            ☰
+        </button>
+        <p class="font-bold text-gray-900">Laporin</p>
+    </div>
     {{-- Sidebar --}}
-    <aside class="w-64 min-h-screen bg-white border-r border-gray-100 flex flex-col fixed top-0 left-0">
-
+    <aside id="sidebar" class="w-64 h-[calc(100vh-56px)] md:h-screen bg-white border-r border-gray-100 flex flex-col fixed top-14 md:top-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 z-30 overflow-hidden">
         {{-- Logo --}}
         <div class="px-6 py-6 border-b border-gray-100">
             <div class="flex items-center gap-3">
@@ -25,7 +30,7 @@
         </div>
 
         {{-- Nav Menu --}}
-        <nav class="flex-1 px-4 py-6 space-y-1">
+        <nav class="px-4 py-6 space-y-1">
 
             @if(auth()->user()->isPetugas())
                 <a href="{{ route('petugas.dashboard') }}"
@@ -78,7 +83,7 @@
         </nav>
 
         {{-- Account + Logout --}}
-        <div class="px-4 py-4 border-t border-gray-100">
+        <div class="px-4 py-4 border-t border-gray-100 mt-auto pt-4">
             <a href="{{ route('account') }}"
                 class="flex items-center gap-3 px-3 py-2 rounded-xl mb-2 hover:bg-gray-50 transition-colors {{ request()->routeIs('account') ? 'bg-gray-100' : '' }}">
                 <div class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
@@ -107,9 +112,16 @@
     </aside>
 
     {{-- Main Content --}}
-    <main class="ml-64 flex-1 p-8">
+    <main class="flex-1 p-6 md:p-8 md:ml-64 mt-14 md:mt-0">
         @yield('content')
     </main>
 
+
+    <script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('-translate-x-full');
+    }
+    </script>
 </body>
 </html>

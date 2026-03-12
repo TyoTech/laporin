@@ -6,7 +6,7 @@
 
 {{-- Header --}}
 <div class="mb-8">
-    <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
+    <h1 class="text-2xl md:text-2xl font-bold text-gray-900">Dashboard</h1>
     <p class="text-gray-400 text-sm mt-1">Semua laporan yang masuk dari warga</p>
 </div>
 
@@ -45,71 +45,109 @@
 
 {{-- Tabel Laporan --}}
 <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden">
-    <table class="w-full">
-        <thead>
-            <tr class="border-b border-gray-100">
-                <th class="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">No</th>
-                <th class="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Judul</th>
-                <th class="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Kategori</th>
-                <th class="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Pelapor</th>
-                <th class="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Status</th>
-                <th class="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Tanggal</th>
-                <th class="text-left px-6 py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Action</th>
-            </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-50">
-            @forelse($laporan as $item)
-            <tr class="hover:bg-gray-50 transition-colors">
-                <td class="px-6 py-4 text-sm text-gray-400">{{ $loop->iteration }}</td>
-                <td class="px-6 py-4">
-                    <a href="{{ route('warga.show', $item->id) }}">
-                        <p class="text-sm font-medium text-gray-900 hover:underline cursor-pointer">{{ $item->judul }}</p>
-                        <p class="text-xs text-gray-400 mt-0.5 line-clamp-1">{{ $item->deskripsi }}</p>
-                    </a>
-                </td>
-                <td class="px-6 py-4">
-                    <span class="px-2.5 py-1 rounded-lg text-xs font-medium bg-gray-100 text-gray-600">
-                        {{ $item->kategori }}
-                    </span>
-                </td>
-                <td class="px-6 py-4 text-sm text-gray-600">{{ $item->user->name }}</td>
-                <td class="px-6 py-4">
-                    @php
-                        $statusColor = match($item->status) {
-                            'Belum Dibaca' => 'bg-yellow-50 text-yellow-600',
-                            'Dikerjakan'   => 'bg-blue-50 text-blue-600',
-                            'Selesai'      => 'bg-green-50 text-green-600',
-                            'Ditolak'      => 'bg-red-50 text-red-600',
-                            default        => 'bg-gray-50 text-gray-600',
-                        };
-                    @endphp
-                    <span class="px-2.5 py-1 rounded-lg text-xs font-medium {{ $statusColor }}">
-                        {{ $item->status }}
-                    </span>
-                </td>
-                <td class="px-6 py-4 text-sm text-gray-400">
-                    {{ $item->created_at->format('d M Y') }}
-                </td>
-                <td class="px-6 py-4">
-                    <a href="{{ route('warga.edit', $item->id) }}"
-                        class="text-blue-500">
-                        Edit
-                    </a>
-                </td>
-            </tr>
-            @empty
-            <tr>
-                <td colspan="6" class="px-6 py-12 text-center text-gray-400 text-sm">
-                    Belum ada laporan yang masuk.
-                </td>
-            </tr>
-            @endforelse
-        </tbody>
-    </table>
+    <div class="hidden md:block overflow-x-auto">
+        <table class="w-full min-w-[700px]">
+            <thead>
+                <tr class="border-b border-gray-100">
+                    <th class="text-left px-4 md:px-6 py-3 md:py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">No</th>
+                    <th class="text-left px-4 md:px-6 py-3 md:py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Judul</th>
+                    <th class="text-left px-4 md:px-6 py-3 md:py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Kategori</th>
+                    <th class="text-left px-4 md:px-6 py-3 md:py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Pelapor</th>
+                    <th class="text-left px-4 md:px-6 py-3 md:py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Status</th>
+                    <th class="text-left px-4 md:px-6 py-3 md:py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Tanggal</th>
+                    <th class="text-left px-4 md:px-6 py-3 md:py-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Action</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-50">
+                @forelse($laporan as $item)
+                <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-4 md:px-6 py-3 md:py-4 text-sm text-gray-400">{{ $loop->iteration }}</td>
+                    <td class="px-4 md:px-6 py-3 md:py-4">
+                        <a href="{{ route('warga.show', $item->id) }}">
+                            <p class="text-sm font-medium text-gray-900 hover:underline cursor-pointer">{{ $item->judul }}</p>
+                            <p class="text-xs text-gray-400 mt-0.5 line-clamp-1">{{ $item->deskripsi }}</p>
+                        </a>
+                    </td>
+                    <td class="px-4 md:px-6 py-3 md:py-4">
+                        <span class="px-2.5 py-1 rounded-lg text-xs font-medium bg-gray-100 text-gray-600">
+                            {{ $item->kategori }}
+                        </span>
+                    </td>
+                    <td class="px-4 md:px-6 py-3 md:py-4 text-sm text-gray-600">{{ $item->user->name }}</td>
+                    <td class="px-4 md:px-6 py-3 md:py-4">
+                        @php
+                            $statusColor = match($item->status) {
+                                'Belum Dibaca' => 'bg-yellow-50 text-yellow-600',
+                                'Dikerjakan'   => 'bg-blue-50 text-blue-600',
+                                'Selesai'      => 'bg-green-50 text-green-600',
+                                'Ditolak'      => 'bg-red-50 text-red-600',
+                                default        => 'bg-gray-50 text-gray-600',
+                            };
+                        @endphp
+                        <span class="px-2.5 py-1 rounded-lg text-xs font-medium {{ $statusColor }}">
+                            {{ $item->status }}
+                        </span>
+                    </td>
+                    <td class="px-4 md:px-6 py-3 md:py-4 text-sm text-gray-400">
+                        {{ $item->created_at->format('d M Y') }}
+                    </td>
+                    <td class="px-4 md:px-6 py-3 md:py-4">
+                        <a href="{{ route('warga.edit', $item->id) }}"
+                            class="text-blue-500">
+                            Edit
+                        </a>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="6" class="px-6 py-12 text-center text-gray-400 text-sm">
+                        Belum ada laporan yang masuk.
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+    <div class="md:hidden space-y-4">
+
+    @foreach($laporan as $item)
+
+    <div class="bg-white p-4 rounded-xl border border-gray-100">
+
+        <p class="font-semibold text-gray-900">
+            {{ $item->judul }}
+        </p>
+
+        <p class="text-sm text-gray-500 mt-1">
+            {{ $item->deskripsi }}
+        </p>
+
+        <div class="mt-3 text-sm space-y-1">
+
+            <p><span class="text-gray-400">Kategori:</span> {{ $item->kategori }}</p>
+
+            <p><span class="text-gray-400">Pelapor:</span> {{ $item->user->name }}</p>
+
+            <p><span class="text-gray-400">Status:</span> {{ $item->status }}</p>
+
+            <p><span class="text-gray-400">Tanggal:</span> {{ $item->created_at->format('d M Y') }}</p>
+
+        </div>
+
+        <a href="{{ route('warga.edit', $item->id) }}"
+        class="inline-block mt-3 text-blue-500 text-sm">
+            Edit
+        </a>
+
+    </div>
+
+    @endforeach
+
+    </div>
 
     {{-- Pagination --}}
     @if($laporan->hasPages())
-    <div class="px-6 py-4 border-t border-gray-100">
+    <div class="px-4 md:px-6 py-3 md:py-4 border-t border-gray-100">
         {{ $laporan->appends(request()->query())->links() }}
     </div>
     @endif
