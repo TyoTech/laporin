@@ -54,7 +54,7 @@ class WargaController extends Controller
             'judul' => $request->judul,
             'kategori' => $request->kategori,
             'deskripsi' => $request->deskripsi,
-            'foto' => json_encode($fotos),
+            'foto' => $fotos,
             'status' => 'Belum Dibaca',
         ]);
 
