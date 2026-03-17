@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ Vite::asset('resources/images/favicon-32x32.png') }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Laporin')</title>
@@ -19,9 +20,7 @@
         {{-- Logo --}}
         <div class="px-6 py-6 border-b border-gray-100">
             <div class="flex items-center gap-3">
-                <div class="w-9 h-9 bg-gray-900 rounded-full flex items-center justify-center">
-                    <span class="text-white text-sm font-bold">L</span>
-                </div>
+                <img src="{{ Vite::asset('resources/images/logo.png') }}" alt="Logo Laporin" class="w-14 h-14 object-contain">
                 <div>
                     <p class="text-xs text-gray-400 uppercase tracking-wider font-medium">Aplikasi</p>
                     <p class="text-sm font-bold text-gray-900">Laporin.</p>
