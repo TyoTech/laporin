@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ Vite::asset('resources/images/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/favicon-32x32.png') }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Laporin</title>
@@ -13,7 +13,7 @@
 
         {{-- Logo --}}
         <div class="flex flex-col items-center mb-8">
-            <img src="{{ Vite::asset('resources/images/logo.png') }}" alt="Logo Laporin" class="w-46 h-32 mb-4">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo Laporin" class="w-46 h-32 mb-4">
             <h1 class="text-2xl font-bold text-gray-900">Selamat Datang.</h1>
             <p class="text-gray-400 text-sm mt-1">Silakan login untuk mengakses Laporin</p>
         </div>
