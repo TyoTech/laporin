@@ -127,51 +127,84 @@
 
 {{-- Script Preview Foto --}}
 <script>
-function previewFoto(input) {
+let selectedFiles = [];
+let existingFotos = @json(is_array($laporan->foto ?? null) ? $laporan->foto : json_decode($laporan->foto ?? '[]', true));
+
+function renderPreview() {
     const preview = document.getElementById('foto-preview');
-    const errorBox = document.getElementById('foto-error');
     preview.innerHTML = '';
-    errorBox.classList.add('hidden');
-    errorBox.textContent = '';
 
-    const files = Array.from(input.files);
-    const maxFile = 3;
-    const maxSize = 2 * 1024 * 1024; // 2MB
+    // tampilkan foto lama
+    existingFotos.forEach((foto, index) => {
+        const div = document.createElement('div');
+        div.className = 'relative';
 
-    // Validasi jumlah
-    if (files.length > maxFile) {
-        errorBox.textContent = 'Maksimal 3 foto yang bisa diupload!';
-        errorBox.classList.remove('hidden');
-        input.value = '';
-        return;
-    }
+        div.innerHTML = `
+            <img src="/storage/${foto}" class="w-24 h-24 object-cover rounded-xl border">
+            <button type="button" onclick="removeExisting(${index})"
+                class="absolute top-1 right-1 bg-black/60 text-white text-xs px-2 rounded-full">✕</button>
+        `;
+        preview.appendChild(div);
+    });
 
-    // Validasi ukuran per file
-    const oversized = files.filter(f => f.size > maxSize);
-    if (oversized.length > 0) {
-        const names = oversized.map(f => `${f.name} (${(f.size / 1024 / 1024).toFixed(1)}MB)`).join(', ');
-        errorBox.textContent = `Foto berikut melebihi batas 2MB: ${names}`;
-        errorBox.classList.remove('hidden');
-        input.value = '';
-        return;
-    }
-
-    // Preview
-    files.forEach(file => {
+    // tampilkan foto baru
+    selectedFiles.forEach((file, index) => {
         const reader = new FileReader();
         reader.onload = (e) => {
             const div = document.createElement('div');
             div.className = 'relative';
+
             div.innerHTML = `
-                <img src="${e.target.result}"
-                    class="w-24 h-24 object-cover rounded-xl border border-gray-200">
-                <p class="text-xs text-gray-400 mt-1 text-center">${(file.size / 1024 / 1024).toFixed(1)}MB</p>
+                <img src="${e.target.result}" class="w-24 h-24 object-cover rounded-xl border">
+                <button type="button" onclick="removeNew(${index})"
+                    class="absolute top-1 right-1 bg-black/60 text-white text-xs px-2 rounded-full">✕</button>
             `;
             preview.appendChild(div);
         };
         reader.readAsDataURL(file);
     });
 }
+
+function previewFoto(input) {
+    const files = Array.from(input.files);
+
+    // gabung, bukan replace
+    selectedFiles = selectedFiles.concat(files);
+
+    if (selectedFiles.length + existingFotos.length > 3) {
+        alert('Maksimal 3 foto');
+        selectedFiles = selectedFiles.slice(0, 3 - existingFotos.length);
+    }
+
+    updateInputFiles();
+    renderPreview();
+}
+
+function removeNew(index) {
+    selectedFiles.splice(index, 1);
+    updateInputFiles();
+    renderPreview();
+}
+
+function removeExisting(index) {
+    existingFotos.splice(index, 1);
+    document.getElementById('existing_fotos').value = JSON.stringify(existingFotos);
+    renderPreview();
+}
+
+// update file input biar sesuai selectedFiles
+function updateInputFiles() {
+    const dataTransfer = new DataTransfer();
+
+    selectedFiles.forEach(file => {
+        dataTransfer.items.add(file);
+    });
+
+    document.getElementById('foto-input').files = dataTransfer.files;
+}
+
+// initial render
+document.addEventListener('DOMContentLoaded', renderPreview);
 </script>
 
 @endsection

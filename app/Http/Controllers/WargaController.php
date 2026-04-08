@@ -71,6 +71,7 @@ class WargaController extends Controller
         $laporan = Laporan::with('user')->findOrFail($id);
         return view('warga.detail-laporan', compact('laporan'));
     }
+
     public function edit($id)
     {
         $laporan = Laporan::findOrFail($id);
@@ -101,9 +102,31 @@ class WargaController extends Controller
                 $fotoPaths[] = $path;
             }
 
-            $data['foto'] = $fotoPaths;
+            // ambil foto lama
+            $oldFotos = $laporan->foto ?? [];
+
+            // handle kalau masih string
+            if (is_string($oldFotos)) {
+                $oldFotos = json_decode($oldFotos, true);
+            }
+
+            // gabungkan
+            $data['foto'] = array_merge($oldFotos, $fotoPaths);
+        }
+        // ambil foto lama dari hidden input
+        $existingFotos = json_decode($request->existing_fotos, true) ?? [];
+
+        $fotoPaths = [];
+
+        if ($request->hasFile('foto')) {
+            foreach ($request->file('foto') as $foto) {
+                $path = $foto->store('laporan', 'public');
+                $fotoPaths[] = $path;
+            }
         }
 
+        // gabungkan
+        $data['foto'] = array_merge($existingFotos, $fotoPaths);
         $laporan->update($data);
 
         return redirect()->route('warga.dashboard')->with('success','Laporan berhasil diupdate');
